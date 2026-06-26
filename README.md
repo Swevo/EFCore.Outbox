@@ -1,7 +1,7 @@
-# EFCore.Outbox
+# Swevo.EFCore.Outbox
 
-[![NuGet](https://img.shields.io/nuget/v/EFCore.Outbox.svg)](https://www.nuget.org/packages/EFCore.Outbox/)
-[![Build](https://github.com/Swevo/EFCore.Outbox/actions/workflows/build.yml/badge.svg)](https://github.com/Swevo/EFCore.Outbox/actions/workflows/build.yml)
+[![NuGet](https://img.shields.io/nuget/v/Swevo.EFCore.Outbox.svg)](https://www.nuget.org/packages/Swevo.EFCore.Outbox/)
+[![Build](https://github.com/Swevo/Swevo.EFCore.Outbox/actions/workflows/build.yml/badge.svg)](https://github.com/Swevo/Swevo.EFCore.Outbox/actions/workflows/build.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 Transactional outbox pattern for EF Core + MassTransit. Enqueue domain events inside your existing `SaveChanges` transaction and publish them reliably via a background processor — zero message loss even if the bus is temporarily unavailable.
@@ -37,7 +37,7 @@ Transactional outbox pattern for EF Core + MassTransit. Enqueue domain events in
 ## Installation
 
 ```bash
-dotnet add package EFCore.Outbox
+dotnet add package Swevo.EFCore.Outbox
 ```
 
 Requires EF Core 8+ and MassTransit 9+.

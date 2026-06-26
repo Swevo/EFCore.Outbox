@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
 
-    <PackageId>EFCore.Outbox</PackageId>
+    <PackageId>Swevo.EFCore.Outbox</PackageId>
     <Version>1.0.0</Version>
     <Authors>Justin Bannister</Authors>
     <Copyright>Copyright (c) 2025 Justin Bannister</Copyright>
