@@ -1,6 +1,7 @@
 # Swevo.EFCore.Outbox
 
-[![NuGet](https://img.shields.io/nuget/v/Swevo.EFCore.Outbox.svg)](https://www.nuget.org/packages/Swevo.EFCore.Outbox/)
+[![NuGet](https://img.shields.io/nuget/v/Swevo.EFCore.Outbox
+[![NuGet Downloads](https://img.shields.io/nuget/dt/Swevo.EFCore.Outbox.svg)](https://www.nuget.org/packages/Swevo.EFCore.Outbox).svg)](https://www.nuget.org/packages/Swevo.EFCore.Outbox/)
 [![Build](https://github.com/Swevo/Swevo.EFCore.Outbox/actions/workflows/build.yml/badge.svg)](https://github.com/Swevo/Swevo.EFCore.Outbox/actions/workflows/build.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
