@@ -10,7 +10,6 @@
     <ProjectReference Include="..\..\src\EFCore.Outbox\EFCore.Outbox.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MassTransit.Abstractions" Version="9.*" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.*" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.*" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.*" />

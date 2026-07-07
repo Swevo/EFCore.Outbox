@@ -1,5 +1,5 @@
 using System.Text.Json;
-using MassTransit;
+using AutoBus;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -10,7 +10,7 @@ namespace EFCore.Outbox;
 
 /// <summary>
 /// Background service that polls the outbox table, publishes pending messages via
-/// <see cref="IPublishEndpoint"/>, and marks them as processed.
+/// <see cref="IMessageBus"/>, and marks them as processed.
 /// </summary>
 public sealed class OutboxProcessor<TContext>(
     IServiceProvider serviceProvider,
@@ -48,7 +48,7 @@ public sealed class OutboxProcessor<TContext>(
     {
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<TContext>();
-        var publisher = scope.ServiceProvider.GetRequiredService<IPublishEndpoint>();
+        var publisher = scope.ServiceProvider.GetRequiredService<IMessageBus>();
 
         var messages = await context.Set<OutboxMessage>()
             .Where(m => m.ProcessedAt == null)
@@ -80,7 +80,7 @@ public sealed class OutboxProcessor<TContext>(
                     continue;
                 }
 
-                await publisher.Publish(payload, type, cancellationToken);
+                await publisher.PublishAsync(payload, type, cancellationToken);
                 message.ProcessedAt = DateTimeOffset.UtcNow;
             }
             catch (Exception ex)

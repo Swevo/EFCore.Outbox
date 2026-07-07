@@ -1,5 +1,5 @@
 using EFCore.Outbox;
-using MassTransit;
+using AutoBus;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -9,15 +9,15 @@ namespace EFCore.Outbox.Tests;
 
 public class OutboxProcessorTests
 {
-    private static (OutboxProcessor<TestDbContext> processor, IPublishEndpoint publisher, IServiceProvider sp)
+    private static (OutboxProcessor<TestDbContext> processor, IMessageBus publisher, IServiceProvider sp)
         BuildProcessor(string dbName, Action<OutboxOptions>? configureOptions = null)
     {
-        var publisher = Substitute.For<IPublishEndpoint>();
+        var publisher = Substitute.For<IMessageBus>();
         var options = new OutboxOptions();
         configureOptions?.Invoke(options);
 
         var services = new ServiceCollection();
-        services.AddSingleton<IPublishEndpoint>(publisher);
+        services.AddSingleton<IMessageBus>(publisher);
         services.AddDbContext<TestDbContext>(o => o.UseInMemoryDatabase(dbName));
         var sp = services.BuildServiceProvider();
 
@@ -52,7 +52,7 @@ public class OutboxProcessorTests
 
         await processor.ProcessBatchAsync();
 
-        await publisher.Received(1).Publish(
+        await publisher.Received(1).PublishAsync(
             Arg.Any<object>(), Arg.Is<Type>(t => t == typeof(OrderPlaced)), Arg.Any<CancellationToken>());
     }
 
@@ -95,7 +95,7 @@ public class OutboxProcessorTests
 
         await processor.ProcessBatchAsync();
 
-        await publisher.DidNotReceive().Publish(Arg.Any<object>(), Arg.Any<Type>(), Arg.Any<CancellationToken>());
+        await publisher.DidNotReceive().PublishAsync(Arg.Any<object>(), Arg.Any<Type>(), Arg.Any<CancellationToken>());
     }
 
     [Fact]
@@ -107,7 +107,7 @@ public class OutboxProcessorTests
 
         await processor.ProcessBatchAsync();
 
-        await publisher.Received(2).Publish(Arg.Any<object>(), Arg.Any<Type>(), Arg.Any<CancellationToken>());
+        await publisher.Received(2).PublishAsync(Arg.Any<object>(), Arg.Any<Type>(), Arg.Any<CancellationToken>());
     }
 
     [Fact]
@@ -115,7 +115,7 @@ public class OutboxProcessorTests
     {
         var (processor, publisher, sp) = BuildProcessor(nameof(ProcessBatch_OrdersMessagesByCreatedAt));
         var publishOrder = new List<object>();
-        await publisher.Publish(
+        await publisher.PublishAsync(
             Arg.Do<object>(m => publishOrder.Add(m)),
             Arg.Any<Type>(),
             Arg.Any<CancellationToken>());
@@ -156,7 +156,7 @@ public class OutboxProcessorTests
 
         await processor.ProcessBatchAsync();
 
-        await publisher.Received(2).Publish(Arg.Any<object>(), Arg.Any<Type>(), Arg.Any<CancellationToken>());
+        await publisher.Received(2).PublishAsync(Arg.Any<object>(), Arg.Any<Type>(), Arg.Any<CancellationToken>());
     }
 
     // ── Error handling ─────────────────────────────────────────────────────
@@ -177,7 +177,7 @@ public class OutboxProcessorTests
         var act = () => processor.ProcessBatchAsync();
         await act.Should().NotThrowAsync();
 
-        await publisher.DidNotReceive().Publish(Arg.Any<object>(), Arg.Any<Type>(), Arg.Any<CancellationToken>());
+        await publisher.DidNotReceive().PublishAsync(Arg.Any<object>(), Arg.Any<Type>(), Arg.Any<CancellationToken>());
     }
 
     [Fact]
@@ -187,7 +187,7 @@ public class OutboxProcessorTests
 
         await processor.ProcessBatchAsync();
 
-        await publisher.DidNotReceive().Publish(Arg.Any<object>(), Arg.Any<Type>(), Arg.Any<CancellationToken>());
+        await publisher.DidNotReceive().PublishAsync(Arg.Any<object>(), Arg.Any<Type>(), Arg.Any<CancellationToken>());
     }
 
     [Fact]
@@ -196,7 +196,7 @@ public class OutboxProcessorTests
         var (processor, publisher, sp) = BuildProcessor(nameof(ProcessBatch_PublishThrows_OtherMessageStillProcessed));
 
         var callCount = 0;
-        publisher.Publish(Arg.Any<object>(), Arg.Any<Type>(), Arg.Any<CancellationToken>())
+        publisher.PublishAsync(Arg.Any<object>(), Arg.Any<Type>(), Arg.Any<CancellationToken>())
             .Returns(ci =>
             {
                 callCount++;
@@ -210,6 +210,6 @@ public class OutboxProcessorTests
         await processor.ProcessBatchAsync();
 
         // Second message should still have been attempted
-        await publisher.Received(2).Publish(Arg.Any<object>(), Arg.Any<Type>(), Arg.Any<CancellationToken>());
+        await publisher.Received(2).PublishAsync(Arg.Any<object>(), Arg.Any<Type>(), Arg.Any<CancellationToken>());
     }
 }

@@ -6,11 +6,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
 
     <PackageId>Swevo.EFCore.Outbox</PackageId>
-    <Version>1.0.1</Version>
+    <Version>2.0.0</Version>
     <Authors>Justin Bannister</Authors>
     <Copyright>Copyright (c) 2025 Justin Bannister</Copyright>
-    <Description>Transactional outbox pattern for EF Core + MassTransit. Add outbox messages atomically with your domain changes via a SaveChangesInterceptor, then publish them reliably via a background processor. Zero message loss even if the bus is unavailable at save time.</Description>
-    <PackageTags>efcore;entity-framework;outbox;transactional-outbox;masstransit;reliable-messaging;background-service;dotnet;csharp;messaging;domain-events</PackageTags>
+    <Description>Transactional outbox pattern for EF Core + AutoBus. Add outbox messages atomically with your domain changes via a SaveChangesInterceptor, then publish them reliably via a background processor. Zero message loss even if the bus is unavailable at save time.</Description>
+    <PackageTags>efcore;entity-framework;outbox;transactional-outbox;autobus;reliable-messaging;background-service;dotnet;csharp;messaging;domain-events</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/Swevo/EFCore.Outbox</RepositoryUrl>
@@ -23,14 +23,14 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <Deterministic>true</Deterministic>
     <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
-    <PackageReleaseNotes>1.0.0: Initial release. Transactional outbox with EF Core SaveChangesInterceptor and MassTransit IPublishEndpoint background processor.</PackageReleaseNotes>
+    <PackageReleaseNotes>2.0.0: BREAKING - Replaced MassTransit's IPublishEndpoint with Swevo.AutoBus's IMessageBus as the publish mechanism. Removes the MassTransit dependency entirely. Existing MassTransit users should register Swevo.AutoBus (with or without a transport) to get an IMessageBus in DI; see README for the migration guide. 1.0.1: Prior MassTransit-based release.</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\..\icon.png" Pack="true" PackagePath="\" />
     <None Include="..\..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MassTransit.Abstractions" Version="9.*" />
+    <PackageReference Include="Swevo.AutoBus" Version="1.*" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.*" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.*" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.*" />
