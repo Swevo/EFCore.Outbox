@@ -4,6 +4,7 @@
 [![NuGet Downloads](https://img.shields.io/nuget/dt/Swevo.EFCore.Outbox.svg)](https://www.nuget.org/packages/Swevo.EFCore.Outbox).svg)](https://www.nuget.org/packages/Swevo.EFCore.Outbox/)
 [![Build](https://github.com/Swevo/Swevo.EFCore.Outbox/actions/workflows/build.yml/badge.svg)](https://github.com/Swevo/Swevo.EFCore.Outbox/actions/workflows/build.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![.NET 10 Ready](https://img.shields.io/badge/.NET-10.0-512BD4?logo=dotnet)](#)
 
 Transactional outbox pattern for EF Core + [AutoBus](https://github.com/Swevo/AutoBus). Enqueue domain events inside your existing `SaveChanges` transaction and publish them reliably via a background processor — zero message loss even if the bus is temporarily unavailable.
 
